@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+
 }
 
 .App-logo {
@@ -26,6 +27,44 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.plates {
+  display: flex;
+  flex-direction: row;
+  width: 15em;
+  flex-wrap: wrap;
+}
+
+/* for now */
+div{
+  justify-content: center;
+  display: flex;
+  padding: 10%;
+}
+
+label{
+  width: 10%;
+  padding-right: 5em;
+}
+
+input {
+  width: 3em;
+}
+button{
+margin-left: 38%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+#weight::-webkit-outer-spin-button,
+#weight::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+#weight[type=number] {
+  -moz-appearance: textfield;
 }
 
 @keyframes App-logo-spin {
