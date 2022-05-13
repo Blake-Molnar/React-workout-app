@@ -40,19 +40,28 @@
 div{
   justify-content: center;
   display: flex;
+  flex-direction: column;
   padding: 10%;
 }
 
-label{
+.plates label{
   width: 10%;
   padding-right: 5em;
 }
 
-input {
+.plates input {
   width: 3em;
 }
+
+#weight{
+  width: 3em;
+  margin: 1em 1em;
+
+}
 button{
-margin-left: 38%;
+  width: 5.5em;
+  height: 2em;
+  margin-left: 1.5em;
 }
 
 /* Chrome, Safari, Edge, Opera */

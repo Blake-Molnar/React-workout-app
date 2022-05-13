@@ -17,10 +17,9 @@ function App() {
   const tens = useRef(null)
   const fives = useRef(null)
   const twoAndAHalf = useRef(null)
-  
+  const [count, setCount] = useState(0);
 
   const setPlates = () => {
-
     setAvailablePlates([])
     setAvailablePlates(availablePlates => ([...availablePlates, { weight: 100, value: hundreds.current.value }]))
     setAvailablePlates(availablePlates => ([...availablePlates, { weight: 45, value: fortyFives.current.value}]))
@@ -30,37 +29,52 @@ function App() {
     setAvailablePlates(availablePlates => ([...availablePlates, { weight: 10, value: tens.current.value}]))
     setAvailablePlates(availablePlates => ([...availablePlates, { weight: 5, value: fives.current.value}]))
     setAvailablePlates(availablePlates => ([...availablePlates, { weight: 2.5, value: twoAndAHalf.current.value}]))
-
+    setCount(count + 1)
   }
 
-const calculate = () => {
+function calculate(e){
+  e.preventDefault()
   setPlates()
-  setCalculateOutput("")
-  this.forceUpdate();
+  };
 
-  let weight = workWeight.current.value - barWeight
-  availablePlates.forEach(pair => {
+  /// this whole useEffect that only calls when the count is incremented is kinda hacky but idk how to make it work otherwise
+  useEffect(() => {
+    setCalculateOutput("")
 
-    
-    if(pair.value > 0 && weight > 0)
+
+    let weight = workWeight.current.value - barWeight
+  
+    availablePlates.map( (pair) =>
     {
-      let numOfPairs = 1
-
-      for (let i = 1; i <= pair.value; i++) {
-
-        if(weight - (pair.weight * 2) >= 0)
-        {
-          weight = weight - (pair.weight * 2)
-          numOfPairs = i
+      
+      if(pair.value > 0 && weight > 0)
+      {
+        let numOfPairs = 0
+  
+        for (let i = 1; i <= pair.value; i++) {
+  
+          if(weight - (pair.weight * 2) >= 0)
+          {
+            weight = weight - (pair.weight * 2)
+            numOfPairs = i
+          }
+  
         }
 
+        if(numOfPairs != 0)
+        {
+          setCalculateOutput(calculateOutput => calculateOutput + `${numOfPairs} ${pair.weight}'s `)
+        }
       }
-      setCalculateOutput(calculateOutput => calculateOutput + `${numOfPairs} ${pair.weight}'s `)
-    }
-    
-  });
+      
+  })
+  
+  if(weight > 0)
+  {
+    setCalculateOutput(calculateOutput => calculateOutput +` with a remainder of ${weight}lb`)
+  }
 
-}
+  },[count]);
 
   return (
     <div>
@@ -70,25 +84,25 @@ const calculate = () => {
           <legend>Available Plate Pairs:</legend>
 
             <label htmlFor="100">100</label>
-              <input type="number" id="100" name="100" defaultValue={0} ref={hundreds}/>
+              <input type="number" id="100" name="100" defaultValue={0} ref={hundreds} min="0"/>
 
               <label htmlFor="45">45</label>
-              <input type="number" id="45" name="45" defaultValue={2} ref={fortyFives}/>
+              <input type="number" id="45" name="45" defaultValue={2} ref={fortyFives} min="0"/>
 
               <label htmlFor="35">35</label>
-              <input type="number" id="35" name="35" defaultValue={0} ref={thirtyFives}/>
+              <input type="number" id="35" name="35" defaultValue={0} ref={thirtyFives} min="0"/>
 
               <label htmlFor="25">25</label>
-              <input type="number" id="25" name="25" defaultValue={2} ref={twentyFives} />
+              <input type="number" id="25" name="25" defaultValue={2} ref={twentyFives} min="0"/>
 
               <label htmlFor="15">15</label>
-              <input type="number" id="15" name="15" defaultValue={1} ref={fifteens}/>
+              <input type="number" id="15" name="15" defaultValue={1} ref={fifteens} min="0"/>
 
               <label htmlFor="10">10</label>
-              <input type="number" id="10" name="10" defaultValue={1} ref={tens}/>
+              <input type="number" id="10" name="10" defaultValue={1} ref={tens} min="0"/>
 
               <label htmlFor="5">5</label>
-              <input type="number" id="5" name="5" defaultValue={1} ref={fives}/>
+              <input type="number" id="5" name="5" defaultValue={1} ref={fives} min="0"/>
 
               <label htmlFor="2.5">2.5</label>
               <input type="number" id="2.5" name="2.5" defaultValue={1} ref={twoAndAHalf}/>
@@ -99,14 +113,16 @@ const calculate = () => {
 
         <label htmlFor="weight" >Work Weight:</label>
         <input type="number" id="weight" name="weight" ref={workWeight}/>
+        <button onClick={calculate}>Calculate</button>
+
         <p>
           {calculateOutput}
         </p>
 
       </form>
-      <button onClick={() => calculate()}>Calculate</button>
 
     </div>
+    
   );
 }
 
