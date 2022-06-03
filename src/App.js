@@ -34,11 +34,18 @@ function App() {
 
 function calculate(e){
   e.preventDefault()
+  if(workWeight.current.value == 0)
+  {
+    setCalculateOutput("Please input a work weight")
+  }
+  else{
   setPlates()
-  };
-
+  }
+  
+}
   /// this whole useEffect that only calls when the count is incremented is kinda hacky but idk how to make it work otherwise
   useEffect(() => {
+
     setCalculateOutput("")
 
 
@@ -63,7 +70,7 @@ function calculate(e){
 
         if(numOfPairs != 0)
         {
-          setCalculateOutput(calculateOutput => calculateOutput + `${numOfPairs} ${pair.weight}'s `)
+          setCalculateOutput(calculateOutput => calculateOutput + `${numOfPairs  > 1 ? numOfPairs + "x" : ""}${pair.weight} \n`)
         }
       }
       
@@ -74,8 +81,9 @@ function calculate(e){
     setCalculateOutput(calculateOutput => calculateOutput +` with a remainder of ${weight}lb`)
   }
 
-  },[count]);
 
+  },[count]);
+  
   return (
     <div>
       <form>
@@ -115,9 +123,9 @@ function calculate(e){
         <input type="number" id="weight" name="weight" ref={workWeight}/>
         <button onClick={calculate}>Calculate</button>
 
-        <p>
+        <b>
           {calculateOutput}
-        </p>
+        </b>
 
       </form>
 
